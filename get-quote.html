@@ -408,15 +408,15 @@ footer{border-top:4px solid var(--gold)}
                     <div class="sum-head"><span>Ref: <strong id="refNo"></strong></span><span><strong id="dateNo"></strong></span></div>
                     <div class="sum-items" id="sumItems"></div>
                     <div style="margin-top:10px">
-                        <div class="sum-row"><span>Sub-Total</span><span id="sumSub">KES 0.00</span></div>
+                        <div class="sum-row"><span>Sub-Total (materials)</span><span id="sumSub">KES 0.00</span></div>
+                        <div class="sum-row"><span>Labour </span><span id="sumLab">KES 0.00</span></div>
                         <div class="sum-row"><label class="tax-label"><input type="checkbox" id="taxToggle"> Include VAT (16%)</label><span id="sumTax">&mdash;</span></div>
                         <div class="sum-row total"><span>Total (KES)</span><span id="sumTotal">KES 0.00</span></div>
                     </div>
                     <div class="words">In words: <b id="sumWords">&mdash;</b></div>
                     <div class="btn-stack">
                         <button type="button" class="btn btn-primary" id="btnPdf"><i class="fas fa-file-pdf"></i> Download PDF</button>
-                        <button type="button" class="btn btn-navy" id="btnEmail"><i class="fas fa-envelope"></i> Send this quote to Duocom</button>
-                        <button type="button" class="btn btn-secondary" id="btnWa"><i class="fab fa-whatsapp"></i> Send via WhatsApp</button>
+                        <button type="button" class="btn btn-navy" id="btnWaPdf"><i class="fab fa-whatsapp"></i> Send this quote to Duocom</button>
                         <button type="button" class="btn btn-outline" id="btnClear"><i class="fas fa-redo"></i> Start over</button>
                     </div>
                     <p class="note" id="estNote"></p>
@@ -538,7 +538,8 @@ footer{border-top:4px solid var(--gold)}
     const refNo = `QT-${now.getFullYear()}${pad2(now.getMonth() + 1)}${pad2(now.getDate())}-${Math.floor(100 + Math.random() * 900)}`;
     $('refNo').textContent = refNo;
     $('dateNo').textContent = dateStr;
-    $('estNote').textContent = SITE_CONFIG.estimateNote;
+    const EST_NOTE = 'Materials plus estimated installation labour (30% of materials). Final labour is confirmed after a free site assessment.';
+    $('estNote').textContent = EST_NOTE;
     $('waFloat').href = `https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent("Hi Duocomsystems, I'm interested in your services")}`;
 
     // ── State (autosaved) ──
@@ -643,10 +644,11 @@ footer{border-top:4px solid var(--gold)}
 
     // ── Summary ──
     const selectedItems = () => PRICE_LIST.filter(p => state.qty[p.id]).map(p => ({ name: p.name, qty: state.qty[p.id], rate: p.rate, amount: p.rate * state.qty[p.id] }));
+    const labourFor = items => { const sub = items.reduce((s, i) => s + i.amount, 0); return Math.round(sub * 0.3 * 100) / 100; };
 
     function refresh() {
         const items = selectedItems();
-        const t = computeTotals(items, state.taxOn, 0);
+        const t = computeTotals(items, state.taxOn, labourFor(items));
         const box = $('sumItems'); box.innerHTML = '';
         if (!items.length) {
             box.innerHTML = '<div class="sum-empty">No items selected yet.<br>Use the + buttons to add items.</div>';
@@ -662,6 +664,7 @@ footer{border-top:4px solid var(--gold)}
             });
         }
         $('sumSub').textContent = fmtKES(t.sub);
+        $('sumLab').textContent = fmtKES(t.labour);
         $('sumTax').textContent = state.taxOn ? fmtKES(t.tax) : '\u2014';
         $('sumTotal').textContent = fmtKES(t.grand);
         $('sumWords').textContent = wordsFor(t.grand);
@@ -681,7 +684,7 @@ footer{border-top:4px solid var(--gold)}
         return {
             title: svc.title + ' QUOTATION', docNo: refNo, dateStr,
             client: { name: state.client.name.trim(), location: state.client.location.trim(), contact: state.client.contact.trim(), service: svc.label },
-            items: selectedItems(), taxOn: state.taxOn, labour: 0, footnote: SITE_CONFIG.estimateNote
+            items: selectedItems(), taxOn: state.taxOn, labour: labourFor(selectedItems()), footnote: EST_NOTE
         };
     }
     function validate(needContact) {
@@ -705,34 +708,27 @@ footer{border-top:4px solid var(--gold)}
             toast('Your quotation PDF is downloading.');
         } catch (e) { toast('Could not create the PDF. Check your internet connection and try again.', true); }
     };
-
-    async function submitEmail(btn, fields, onDone) {
-        const label = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-        try {
-            await sendToInbox(fields);
-            onDone();
-        } catch (e) {
-            toast('Could not send right now. Please try WhatsApp or call us on ' + SITE_CONFIG.phones + '.', true);
-        } finally { btn.disabled = false; btn.innerHTML = label; }
-    }
-    $('btnEmail').onclick = () => {
+    $('btnWaPdf').onclick = async () => {
         if (!validate(true)) return;
         const q = currentQuote();
-        const fields = {
-            _subject: `Quote request ${q.docNo} - ${q.client.name}`, _honey: '',
-            'Request type': 'Quote built from price list', Reference: q.docNo, Date: q.dateStr,
-            Name: q.client.name, 'Phone / Email': q.client.contact, Location: q.client.location || '-', Service: q.client.service,
-            Items: quoteText(q)
-        };
-        if (q.client.contact.includes('@')) fields.email = q.client.contact;
-        submitEmail($('btnEmail'), fields, () => toast('Sent! Our team will contact you shortly.'));
-    };
-    $('btnWa').onclick = () => {
-        if (!validate(false)) return;
-        const q = currentQuote();
-        const msg = `*${q.title} REQUEST - Duocomsystems*\nRef: ${q.docNo}\nDate: ${q.dateStr}\nService: ${q.client.service}\n`
-            + `Client: ${q.client.name}${q.client.location ? ', ' + q.client.location : ''}${q.client.contact ? '\nContact: ' + q.client.contact : ''}\n\n*ITEMS:*\n${quoteText(q)}`;
-        window.open(`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+        const btn = $('btnWaPdf'), label = btn.innerHTML;
+        btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing PDF...';
+        try {
+            const doc = buildQuotePDF(q);
+            const fname = `Quotation_${safeName(q.client.name)}_${q.docNo}.pdf`;
+            const file = new File([doc.output('blob')], fname, { type: 'application/pdf' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({ files: [file], title: 'Duocomsystems Quotation', text: `Quotation ${q.docNo} - ${q.client.name}` });
+                toast('Done - pick WhatsApp in the share sheet and press send.');
+            } else {
+                doc.save(fname);
+                const msg = 'Hi Duocomsystems, here is my quotation request (' + q.docNo + ' - ' + q.client.name + '). The PDF just downloaded - I will attach it in this chat.';
+                window.open('https://wa.me/' + SITE_CONFIG.whatsapp + '?text=' + encodeURIComponent(msg), '_blank');
+                toast('PDF downloaded - attach it in the WhatsApp chat that opened.');
+            }
+        } catch (e) {
+            if (!e || e.name !== 'AbortError') toast('Could not prepare the PDF. Check your connection and try again.', true);
+        } finally { btn.disabled = false; btn.innerHTML = label; }
     };
     $('btnClear').onclick = () => {
         if (!confirm('Clear your items and details and start over?')) return;
