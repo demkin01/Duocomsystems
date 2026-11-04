@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get a Quote | Duocomsystems</title>
+    <meta name="description" content="Build an instant estimate from our price list or request a custom quote for CCTV, alarms, access control, WiFi or intercom installation in Nairobi.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Get a Quote | Duocomsystems">
+    <meta property="og:description" content="Build an instant estimate from our price list or request a custom quote for CCTV, alarms, access control, WiFi or intercom installation in Nairobi.">
+    <meta property="og:image" content="logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- Google Analytics: replace G-XXXXXXXXXX with your Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --navy-blue: rgb(10, 29, 61);
+            --gold: #FFB400;
+            --purple: #6B4FA0;
+            --light-purple: #EDE7F6;
+            --dark-gray: #2D3748;
+            --medium-gray: #4A5568;
+            --light-gray: #F7FAFC;
+            --line: #D4D4DC;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --transition: all 0.25s ease;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,-apple-system,sans-serif; }
+        body { line-height:1.6; color:var(--dark-gray); background:var(--white); }
+        .container { width:100%; max-width:1200px; margin:0 auto; padding:0 20px; }
+        [hidden] { display:none !important; }
+
+        /* HEADER */
+        header { box-shadow:var(--shadow); position:fixed; width:100%; top:0; z-index:1000; }
+        .header-section { background-color:var(--navy-blue); }
+        .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 0; }
+        .logo { font-size:1.8rem; font-weight:700; color:var(--white); text-decoration:none; display:flex; align-items:center; }
+        .logo i { margin-right:10px; font-size:2rem; color:var(--gold); }
+        .nav-links { display:flex; list-style:none; }
+        .nav-links li { margin-left:30px; }
+        .nav-links a { text-decoration:none; color:var(--white); font-weight:500; transition:var(--transition); }
+        .nav-links a:hover { color:var(--gold); }
+        .mobile-menu-btn { display:none; background:none; border:none; font-size:1.5rem; color:var(--white); cursor:pointer; }
+
+        /* HERO */
+        .page-hero {
+            background: linear-gradient(rgba(10,29,61,0.88), rgba(10,29,61,0.88)),
+                        url('https://images.unsplash.com/photo-1558002038-10559076dfd0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size:cover; background-position:center;
+            color:var(--white); padding:130px 0 50px; text-align:center;
+        }
+        .page-hero h1 { font-size:2.6rem; margin-bottom:10px; }
+        .page-hero p  { font-size:1.1rem; opacity:.85; max-width:640px; margin:0 auto; }
+
+        .quote-section { padding:36px 0 90px; background:var(--light-gray); }
+
+        /* MODE TABS */
+        .mode-tabs { display:flex; gap:10px; max-width:640px; margin:0 auto 28px; background:var(--white); padding:6px; border-radius:12px; box-shadow:0 2px 12px rgba(10,29,61,.08); }
+        .mode-tab { flex:1; border:none; background:transparent; padding:12px 14px; border-radius:8px; font-size:.95rem; font-weight:600; color:var(--medium-gray); cursor:pointer; transition:var(--transition); display:flex; align-items:center; justify-content:center; gap:8px; }
+        .mode-tab.active { background:var(--navy-blue); color:var(--white); }
+        .mode-tab:not(.active):hover { background:var(--light-gray); color:var(--navy-blue); }
+
+        /* PANELS */
+        .panel { background:var(--white); border-radius:12px; box-shadow:0 4px 20px rgba(10,29,61,.08); padding:22px 24px; margin-bottom:20px; }
+        .panel h3 { color:var(--navy-blue); font-size:1.05rem; margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+        .panel h3 .num { background:var(--gold); color:var(--navy-blue); width:26px; height:26px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:.85rem; font-weight:700; }
+
+        .field-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px 18px; }
+        .field-grid .full { grid-column:1 / -1; }
+        .field label { display:block; font-size:.78rem; font-weight:600; color:var(--medium-gray); margin-bottom:4px; }
+        .field input, .field select, .field textarea {
+            width:100%; border:1.5px solid #DDE3EF; border-radius:8px; padding:10px 12px; font-size:.95rem;
+            color:var(--dark-gray); background:var(--white); outline:none; transition:var(--transition);
+        }
+        .field textarea { min-height:100px; resize:vertical; }
+        .field input:focus, .field select:focus, .field textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(255,180,0,.15); }
+        .field .invalid { border-color:#E53E3E; }
+
+        /* BUILD LAYOUT */
+        .build-grid { display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:24px; align-items:start; }
+        .summary { position:sticky; top:100px; margin-bottom:0; }
+
+        /* PRODUCT LIST */
+        .filters { display:flex; flex-direction:column; gap:10px; margin-bottom:6px; }
+        .search-box { position:relative; }
+        .search-box i { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#A0AEC0; }
+        .search-box input { width:100%; border:1.5px solid #DDE3EF; border-radius:8px; padding:10px 12px 10px 36px; font-size:.95rem; outline:none; }
+        .search-box input:focus { border-color:var(--gold); }
+        .cat-chips { display:flex; gap:8px; flex-wrap:wrap; }
+        .chip { padding:6px 14px; border-radius:20px; border:1.5px solid #DDE3EF; background:var(--white); font-size:.8rem; color:var(--medium-gray); cursor:pointer; transition:var(--transition); user-select:none; }
+        .chip.active { background:var(--navy-blue); color:var(--white); border-color:var(--navy-blue); }
+        .chip:hover:not(.active) { border-color:var(--gold); color:var(--navy-blue); }
+
+        .cat-title { margin:18px 0 6px; font-size:.8rem; text-transform:uppercase; letter-spacing:.07em; color:var(--purple); }
+        .product { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:10px 12px; border:1.5px solid #EDF0F5; border-radius:10px; margin-bottom:8px; transition:var(--transition); }
+        .product.selected { border-color:var(--gold); background:#FFFBF0; }
+        .p-name { font-weight:600; font-size:.93rem; }
+        .p-rate { font-size:.82rem; color:var(--medium-gray); }
+        .stepper { display:flex; align-items:center; flex-shrink:0; }
+        .stepper button { width:34px; height:34px; border:1.5px solid #DDE3EF; background:var(--white); font-size:1.1rem; cursor:pointer; color:var(--navy-blue); transition:var(--transition); }
+        .stepper button:first-child { border-radius:8px 0 0 8px; }
+        .stepper button:last-child  { border-radius:0 8px 8px 0; }
+        .stepper button:hover { background:var(--gold); border-color:var(--gold); }
+        .stepper input { width:54px; height:34px; border:1.5px solid #DDE3EF; border-left:none; border-right:none; text-align:center; font-size:.95rem; outline:none; -moz-appearance:textfield; }
+        .stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+        .empty { color:var(--medium-gray); font-size:.9rem; padding:14px 4px; }
+        .hint { font-size:.82rem; color:var(--medium-gray); margin-top:12px; }
+        .hint a { color:var(--purple); font-weight:600; cursor:pointer; }
+
+        /* SUMMARY */
+        .sum-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-size:.78rem; color:var(--medium-gray); }
+        .sum-head strong { color:var(--navy-blue); }
+        .sum-items { max-height:280px; overflow-y:auto; border-top:1px solid #EDF0F5; }
+        .sum-item { display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid #EDF0F5; font-size:.86rem; }
+        .sum-item .nm { flex:1; }
+        .sum-item .nm small { display:block; color:var(--medium-gray); font-size:.76rem; }
+        .sum-item .am { font-weight:600; white-space:nowrap; color:var(--navy-blue); }
+        .sum-empty { padding:18px 0; text-align:center; color:#A0AEC0; font-size:.88rem; }
+        .sum-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; font-size:.92rem; }
+        .sum-row.total { border-top:2.5px solid var(--purple); margin-top:6px; padding-top:10px; font-size:1.2rem; font-weight:700; color:var(--navy-blue); }
+        .tax-label { display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none; color:var(--medium-gray); }
+        .tax-label input { width:17px; height:17px; accent-color:var(--purple); cursor:pointer; }
+        .words { margin-top:12px; padding:10px 12px; background:var(--light-gray); border-left:4px solid var(--purple); border-radius:6px; font-size:.78rem; color:var(--medium-gray); }
+        .words b { color:var(--dark-gray); }
+        .note { margin-top:12px; font-size:.78rem; color:var(--medium-gray); }
+
+        .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 20px; border-radius:8px; font-weight:600; font-size:.93rem; cursor:pointer; transition:var(--transition); border:none; width:100%; }
+        .btn-primary { background:var(--gold); color:var(--navy-blue); }
+        .btn-primary:hover { background:#e6a200; transform:translateY(-2px); box-shadow:var(--shadow); }
+        .btn-navy { background:var(--navy-blue); color:var(--white); }
+        .btn-navy:hover { background:#16356b; transform:translateY(-2px); }
+        .btn-secondary { background:var(--white); color:var(--navy-blue); border:2px solid var(--navy-blue); }
+        .btn-secondary:hover { background:var(--light-gray); transform:translateY(-2px); }
+        .btn-outline { background:transparent; color:var(--medium-gray); border:1.5px solid #DDE3EF; }
+        .btn-outline:hover { border-color:var(--navy-blue); color:var(--navy-blue); }
+        .btn[disabled] { opacity:.6; cursor:wait; transform:none; }
+        .btn-stack { display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+
+        /* REQUEST MODE */
+        .request-wrap { max-width:820px; margin:0 auto; }
+        .check-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px 16px; }
+        .check-grid label { display:flex; align-items:center; gap:8px; font-size:.9rem; cursor:pointer; padding:6px 0; }
+        .check-grid input { width:17px; height:17px; accent-color:var(--purple); }
+        .success { text-align:center; padding:34px 20px; }
+        .success i { font-size:3rem; color:#38A169; margin-bottom:12px; }
+        .success h3 { justify-content:center; font-size:1.3rem; }
+        .success p { color:var(--medium-gray); margin:6px 0; }
+        .cam-split { display:grid; grid-template-columns:1fr 1fr auto; gap:12px; align-items:end; }
+        .cam-split span { display:block; font-size:.76rem; color:var(--medium-gray); margin-bottom:3px; }
+        .cam-total { padding:10px 14px; background:var(--light-gray); border-radius:8px; font-size:.92rem; color:var(--navy-blue); white-space:nowrap; }
+        .cam-hint { display:block; margin-top:6px; font-size:.76rem; color:var(--medium-gray); }
+        .honey { position:absolute; left:-9999px; opacity:0; height:0; width:0; }
+
+        .whatsapp-float { position:fixed; bottom:30px; right:30px; width:60px; height:60px; background:#25D366; color:var(--white); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.8rem; box-shadow:var(--shadow); z-index:900; transition:var(--transition); text-decoration:none; }
+        .whatsapp-float:hover { transform:scale(1.1); color:var(--white); }
+
+        footer { background:var(--navy-blue); color:var(--white); padding:30px 0; }
+        .footer-bottom { text-align:center; color:#CBD5E0; font-size:.85rem; }
+
+        .toast { position:fixed; bottom:100px; right:30px; z-index:9999; background:var(--navy-blue); color:var(--white); padding:14px 22px; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.2); display:flex; align-items:center; gap:10px; font-size:.9rem; transform:translateY(20px); opacity:0; transition:all .3s ease; pointer-events:none; max-width:320px; }
+        .toast.show { transform:translateY(0); opacity:1; }
+        .toast i { color:var(--gold); }
+        .toast.error i { color:#FC8181; }
+
+        /* Mobile total bar */
+        .mobile-bar { display:none; position:fixed; left:0; right:0; bottom:0; z-index:950; background:var(--navy-blue); color:var(--white); padding:10px 16px; align-items:center; justify-content:space-between; box-shadow:0 -4px 16px rgba(0,0,0,.2); }
+        .mobile-bar small { display:block; color:#CBD5E0; font-size:.72rem; line-height:1.2; }
+        .mobile-bar strong { font-size:1.1rem; color:var(--gold); }
+        .mobile-bar button { background:var(--gold); color:var(--navy-blue); border:none; padding:10px 18px; border-radius:8px; font-weight:700; cursor:pointer; }
+
+        @media(max-width:900px){
+            .build-grid { grid-template-columns:1fr; }
+            .summary { position:static; }
+            .mobile-bar.show { display:flex; }
+            .whatsapp-float { bottom:84px; right:16px; width:52px; height:52px; font-size:1.5rem; }
+            .toast { bottom:150px; right:16px; left:16px; max-width:none; }
+        }
+        @media(max-width:768px){
+            .field-grid, .check-grid { grid-template-columns:1fr; }
+            .cam-split { grid-template-columns:1fr 1fr; }
+            .cam-total { grid-column:1 / -1; }
+            .panel { padding:18px 16px; }
+            .nav-links { display:none; position:absolute; top:100%; left:0; width:100%; background:var(--navy-blue); flex-direction:column; padding:20px; box-shadow:var(--shadow); }
+            .nav-links.active { display:flex; }
+            .nav-links li { margin:10px 0; }
+            .mobile-menu-btn { display:block; }
+            .page-hero h1 { font-size:1.9rem; }
+            .product { flex-direction:column; align-items:stretch; }
+            .product .stepper { align-self:flex-end; }
+            .mode-tab { font-size:.85rem; padding:10px 8px; }
+        }
+    
+/* ===== 2026 refresh ===== */
+.logo img{height:46px;width:auto;background:#fff;border-radius:8px;padding:4px 10px;margin-right:10px}
+.logo span{font-size:1.5rem}
+.footer-logo{display:inline-block}
+.footer-logo img{height:52px;background:#fff;border-radius:8px;padding:6px 12px;margin-bottom:14px}
+.btn-quote-nav{background:var(--gold)!important;color:var(--navy-blue)!important;padding:8px 20px!important;border-radius:20px;font-weight:700}
+.btn-quote-nav:hover{background:#e6a200!important}
+.mobile-menu-btn{color:var(--white)!important}
+.privacy-note{font-size:.78rem;color:var(--medium-gray);margin:4px 0 14px}
+.honey{position:absolute;left:-9999px;opacity:0;height:0;width:0}
+.mobile-call-bar{display:none}
+@media (max-width:820px){
+    .mobile-call-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:1500;background:var(--navy-blue);box-shadow:0 -4px 16px rgba(0,0,0,.25)}
+    .mobile-call-bar a{flex:1;text-align:center;padding:14px 6px;font-weight:700;font-size:.95rem;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px}
+    .mcb-call{background:#1a56db;color:#fff}
+    .mcb-wa{background:#25D366;color:#fff}
+    .mcb-quote{background:var(--gold);color:var(--navy-blue)!important}
+    .whatsapp-float{display:none}
+    body{padding-bottom:52px}
+}
+
+/* Nov 2026: logo-only header, blended into navy (no white box) */
+.logo img{background:transparent!important;padding:0!important;border-radius:0!important;height:54px;margin-right:0}
+.logo span{display:none}
+.cta-section p.cta-phone{font-size:1rem;opacity:.9;margin-top:22px;margin-bottom:0}
+.cta-section p.cta-phone a{color:var(--gold);font-weight:600}
+
+/* Nov 2026 (2): floating slimmer header + larger blended logos */
+header{width:min(1200px,calc(100% - 24px))!important;left:50%!important;right:auto!important;transform:translateX(-50%);top:10px;border-radius:14px}
+.header-section{border-radius:14px}
+.navbar{padding:10px 0}
+.logo img{height:62px}
+.footer-logo img{height:64px;background:transparent!important;padding:0!important;border-radius:0!important}
+@media (max-width:820px){.logo img{height:50px}}
+
+/* ===== Design v2 ===== */
+body{font-family:'Inter','Segoe UI',system-ui,sans-serif!important;color:#33404f}
+h1,h2,h3,h4,h5,.logo span{font-family:'Outfit','Public Sans',sans-serif!important;letter-spacing:-.01em}
+.btn{font-family:'Inter',sans-serif;border-radius:10px!important}
+.btn-primary{background:var(--gold)!important;color:var(--navy-blue)!important}
+.btn-primary:hover{background:#e6a200!important}
+.btn-secondary{background:transparent!important;color:var(--navy-blue)!important;border:2px solid var(--navy-blue)!important}
+.btn-secondary:hover{background:var(--navy-blue)!important;color:#fff!important}
+.service-hero .btn-secondary,.hero .btn-secondary,.cta-section .btn-secondary{color:#fff!important;border-color:#fff!important}
+.service-hero .btn-secondary:hover,.hero .btn-secondary:hover,.cta-section .btn-secondary:hover{background:#fff!important;color:var(--navy-blue)!important}
+.why-choose-section,.achievements-section{background-color:#13294e!important}
+header{transition:box-shadow .3s ease}
+header .navbar{transition:padding .3s ease}
+header .logo img{transition:height .3s ease}
+header.header-sm{box-shadow:0 10px 28px rgba(0,0,0,.28)}
+header.header-sm .navbar{padding:6px 0}
+header.header-sm .logo img{height:44px}
+@media (max-width:820px){header.header-sm .logo img{height:36px}}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.2,.7,.3,1),transform .6s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal:nth-child(2){transition-delay:.08s}
+.reveal:nth-child(3){transition-delay:.16s}
+.reveal:nth-child(4){transition-delay:.24s}
+.reveal:nth-child(5){transition-delay:.32s}
+.reveal:nth-child(6){transition-delay:.4s}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none!important}}
+
+/* full footer for the quote page */
+footer{padding:50px 0 30px!important}
+.footer-content{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:40px;margin-bottom:40px}
+.footer-column h3{font-size:1.1rem;margin-bottom:16px;color:#fff}
+.footer-links{list-style:none;margin:0;padding:0}
+.footer-links li{margin-bottom:9px}
+.footer-links a{color:#CBD5E0;text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--gold)}
+.footer-logo{display:inline-block}
+.footer-logo img{height:64px;background:transparent;padding:0}
+.footer-bottom{text-align:center;color:#CBD5E0;font-size:.85rem;border-top:1px solid rgba(255,255,255,.1);padding-top:24px!important}
+.footer-bottom p{margin:0}
+
+/* ===== Design v3: teal & amber ===== */
+:root{--navy-blue:#0a1d3d;--light-navy:#1a2d4d;--gold:#ffb400;--light-gray:#f4f7f6;--dark-gray:#26333a;--medium-gray:#52666d}
+body{font-family:'Public Sans','Inter',system-ui,sans-serif!important;color:#33454d}
+h1,h2,h3,h4,h5,.logo span{font-family:'Outfit','Public Sans',sans-serif!important;letter-spacing:-.015em}
+::selection{background:var(--gold);color:var(--navy-blue)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.btn{border-radius:999px!important;font-weight:600}
+.btn-primary{box-shadow:0 6px 18px rgba(245,165,36,.35)}
+.btn-primary:hover{transform:translateY(-2px)}
+/* full-width header */
+header{width:100%!important;left:0!important;right:auto!important;transform:none!important;top:0!important;border-radius:0!important}
+.header-section{border-radius:0!important}
+.navbar{padding:14px 0}
+header .logo img{height:54px}
+header.header-sm .navbar{padding:8px 0}
+header.header-sm .logo img{height:42px}
+/* rounded cards */
+.service-card,.system-card,.maintenance-card,.mvv-card,.reason-card,.team-member,.testimonial-card{border-radius:16px}
+/* left-aligned section titles with accent bar */
+.section-title{text-align:left;position:relative;padding-bottom:14px}
+.section-title::after{content:'';position:absolute;left:0;bottom:0;width:56px;height:4px;border-radius:2px;background:var(--gold)}
+.section-subtitle{text-align:left;margin-left:0}
+.cta-section .section-title,.cta-section .section-subtitle{text-align:center}
+.cta-section .section-title::after{left:50%;transform:translateX(-50%)}
+/* dark trust band */
+.trust-indicators{background:var(--navy-blue)}
+.trust-indicators .indicator-number{color:var(--gold)}
+.trust-indicators .indicator-text{color:rgba(255,255,255,.85)}
+/* footer accent */
+footer{border-top:4px solid var(--gold)}
+/* split homepage hero */
+.hero{text-align:left;padding:150px 0 90px}
+.hero-content{max-width:none}
+.hero h1,.hero p{text-align:left;margin-left:0;margin-right:0}
+.hero .hero-buttons{justify-content:flex-start}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;padding:7px 16px;border-radius:999px;font-size:.85rem;font-weight:600;margin-bottom:22px}
+.hero-points{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:10px 26px}
+.hero-points li{color:rgba(255,255,255,.92);font-size:.95rem;display:flex;align-items:center;gap:8px}
+.hero-points i{color:var(--gold)}
+.hero-media{position:relative}
+.hero-media img{width:100%;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.4);display:block}
+.hero-chip{position:absolute;background:#fff;color:var(--navy-blue);border-radius:12px;padding:10px 16px;font-weight:700;font-size:.9rem;box-shadow:0 10px 30px rgba(0,0,0,.35);display:flex;align-items:center;gap:8px}
+.hero-chip i{color:var(--gold)}
+.hero-chip.a{bottom:22px;left:-18px}
+.hero-chip.b{top:22px;right:-14px}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr}.hero{padding:130px 0 70px}.hero-chip.a{left:10px}.hero-chip.b{right:10px}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Public+Sans:wght@400;500;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<a href="https://wa.me/254100480559" id="waFloat" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+<header>
+        <section class="header-section">
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img src="logo-white.png" alt="Duocom Systems logo">
+                    <span>Duocomsystems</span>
+                </a>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="get-quote.html" class="btn-quote-nav">Get Quote</a></li>
+                </ul>
+                <button class="mobile-menu-btn" aria-label="Open menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+        </section>
+    </header>
+
+<section class="page-hero">
+    <div class="container">
+        <h1><i class="fas fa-file-invoice-dollar" style="color:var(--gold);margin-right:12px;"></i>Request a Quote</h1>
+        <p>Pick the items you need for an instant estimate, or tell us about your site and we'll prepare a quote for you.</p>
+    </div>
+</section>
+
+<section class="quote-section">
+    <div class="container">
+
+        <div class="mode-tabs" role="tablist">
+            <button type="button" class="mode-tab active" id="tabBuild" role="tab"><i class="fas fa-list-check"></i> Build Your Quote</button>
+            <button type="button" class="mode-tab" id="tabRequest" role="tab"><i class="fas fa-paper-plane"></i> Request a Custom Quote</button>
+        </div>
+
+        <!-- ═════════ BUILD MODE ═════════ -->
+        <div id="buildMode">
+            <div class="build-grid">
+                <div>
+                    <div class="panel">
+                        <h3><span class="num">1</span> Your details</h3>
+                        <div class="field-grid">
+                            <div class="field"><label for="clientName">Name / Company *</label><input type="text" id="clientName" placeholder="e.g. PCEA Amani Church" autocomplete="organization"></div>
+                            <div class="field"><label for="clientContact">Phone or Email *</label><input type="text" id="clientContact" placeholder="07xx xxx xxx or you@email.com" autocomplete="tel"></div>
+                            <div class="field"><label for="clientLocation">Location</label><input type="text" id="clientLocation" placeholder="e.g. Ruiru, Kiambu" autocomplete="address-level2"></div>
+                            <div class="field"><label for="serviceSel">Service</label><select id="serviceSel"></select></div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h3><span class="num">2</span> Choose your items</h3>
+                        <div class="filters">
+                            <div class="search-box"><i class="fas fa-search"></i><input type="search" id="searchBox" placeholder="Search items (e.g. camera, cable, NVR)"></div>
+                            <div class="cat-chips" id="catChips"></div>
+                        </div>
+                        <div id="productList"></div>
+                        <p class="hint">Can't find what you need? <a id="gotoRequest">Request a custom quote</a> and tell us about your site.</p>
+                    </div>
+                </div>
+
+                <aside class="panel summary" id="summary">
+                    <h3><i class="fas fa-file-invoice" style="color:var(--gold)"></i> Your quote</h3>
+                    <div class="sum-head"><span>Ref: <strong id="refNo"></strong></span><span><strong id="dateNo"></strong></span></div>
+                    <div class="sum-items" id="sumItems"></div>
+                    <div style="margin-top:10px">
+                        <div class="sum-row"><span>Sub-Total</span><span id="sumSub">KES 0.00</span></div>
+                        <div class="sum-row"><label class="tax-label"><input type="checkbox" id="taxToggle"> Include VAT (16%)</label><span id="sumTax">&mdash;</span></div>
+                        <div class="sum-row total"><span>Total (KES)</span><span id="sumTotal">KES 0.00</span></div>
+                    </div>
+                    <div class="words">In words: <b id="sumWords">&mdash;</b></div>
+                    <div class="btn-stack">
+                        <button type="button" class="btn btn-primary" id="btnPdf"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                        <button type="button" class="btn btn-navy" id="btnEmail"><i class="fas fa-envelope"></i> Send this quote to Duocom</button>
+                        <button type="button" class="btn btn-secondary" id="btnWa"><i class="fab fa-whatsapp"></i> Send via WhatsApp</button>
+                        <button type="button" class="btn btn-outline" id="btnClear"><i class="fas fa-redo"></i> Start over</button>
+                    </div>
+                    <p class="note" id="estNote"></p>
+                </aside>
+            </div>
+        </div>
+
+        <!-- ═════════ REQUEST MODE ═════════ -->
+        <div id="requestMode" hidden>
+            <div class="request-wrap">
+                <div class="panel" id="reqFormPanel">
+                    <h3><i class="fas fa-paper-plane" style="color:var(--gold)"></i> Tell us about your site</h3>
+                    <p style="color:var(--medium-gray);font-size:.9rem;margin-bottom:16px">Not sure what you need? Give us a few details and our team will prepare a quotation and contact you.</p>
+                    <form id="reqForm" novalidate>
+                        <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+                        <div class="field-grid">
+                            <div class="field"><label for="rName">Name / Company *</label><input type="text" id="rName" autocomplete="organization"></div>
+                            <div class="field"><label for="rContact">Phone or Email *</label><input type="text" id="rContact" autocomplete="tel"></div>
+                            <div class="field"><label for="rLocation">Site location</label><input type="text" id="rLocation" placeholder="e.g. Ruiru, Kiambu"></div>
+                            <div class="field"><label for="rSite">Type of site</label>
+                                <select id="rSite">
+                                    <option value="">Select...</option><option>Home / Residential</option><option>Apartments / Estate</option><option>Church / School</option>
+                                    <option>Office</option><option>Shop / Retail</option><option>Mall / Commercial building</option><option>Warehouse / Industrial</option><option>Other</option>
+                                </select></div>
+                            <div class="field full"><label>What do you need?</label>
+                                <div class="check-grid" id="rServices"></div></div>
+                            <div class="field full"><label>How many cameras do you need, and where?</label>
+                                <div class="cam-split">
+                                    <div><span>Indoor</span><input type="number" id="rIn" min="0" step="1" inputmode="numeric" placeholder="e.g. 8"></div>
+                                    <div><span>Outdoor</span><input type="number" id="rOut" min="0" step="1" inputmode="numeric" placeholder="e.g. 2"></div>
+                                    <div class="cam-total">Total: <b id="rCamTotal">0</b></div>
+                                </div>
+                                <small class="cam-hint">Not sure yet? Leave blank and tell us more in the notes below.</small></div>
+                            <div class="field full"><label for="rDetails">Anything else we should know?</label>
+                                <textarea id="rDetails" placeholder="e.g. 3-storey building, need to view cameras on my phone, existing cabling..."></textarea></div>
+                        </div>
+                        <div class="btn-stack" style="max-width:360px">
+                            <button type="submit" class="btn btn-primary" id="btnReqSend"><i class="fas fa-paper-plane"></i> Send Request</button>
+                            <button type="button" class="btn btn-secondary" id="btnReqWa"><i class="fab fa-whatsapp"></i> Send on WhatsApp instead</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel success" id="reqSuccess" hidden>
+                    <i class="fas fa-circle-check"></i>
+                    <h3>Request received</h3>
+                    <p>Thank you! Our team will review your details and contact you shortly.</p>
+                    <p style="margin-top:18px"><button type="button" class="btn btn-outline" style="width:auto" id="btnReqAgain">Send another request</button></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<div class="mobile-bar" id="mobileBar">
+    <div><small>Estimated total</small><strong id="mbTotal">KES 0.00</strong></div>
+    <button type="button" id="mbBtn">View quote</button>
+</div>
+
+<footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <a href="index.html" class="footer-logo"><img src="logo-white.png" alt="Duocom Systems logo"></a>
+                    <p>Your trusted partner for security and telecom solutions in Nairobi. Protecting what matters most with quality equipment, expert installation and 24/7 support.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="get-quote.html">Get a Quote</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Our Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="cctv-installation.html">CCTV Installation</a></li>
+                        <li><a href="biometric-access-control.html">Biometric Access Control</a></li>
+                        <li><a href="burglar-fire-alarms.html">Burglar &amp; Fire Alarms</a></li>
+                        <li><a href="smoke-detectors.html">Smoke Detectors</a></li>
+                        <li><a href="wifi-networking.html">WiFi &amp; Networking</a></li>
+                        <li><a href="intercom-systems.html">Intercom Systems</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> Roysambu, Nairobi, Kenya</li>
+                        <li><i class="fas fa-phone"></i> <a href="tel:+254741475808" style="color:#CBD5E0">0741 475 808</a> / <a href="tel:+254100480559" style="color:#CBD5E0">0100 480 559</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:info@duocomsystems.com" style="color:#CBD5E0">info@duocomsystems.com</a></li>
+                        <li><i class="fas fa-clock"></i> Mon-Fri: 8AM-6PM, Emergencies 24/7</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span class="yr">2026</span> Duocomsystems. All Rights Reserved. | Protecting Nairobi since 2018</p>
+            </div>
+        </div>
+    </footer>
+    <script>document.querySelectorAll('.yr').forEach(function(e){e.textContent=new Date().getFullYear();});</script>
+    <script>document.querySelectorAll('.yr').forEach(function(e){e.textContent=new Date().getFullYear();});</script>
+
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="prices.js"></script>
+<script src="quote-core.js"></script>
+<script>
+(function () {
+    const $ = id => document.getElementById(id);
+    const STORE_KEY = 'duocom_public_quote_v1';
+
+    // ── Reference number & date (new for each visit) ──
+    const now = new Date();
+    const dateStr = todayStr();
+    const refNo = `QT-${now.getFullYear()}${pad2(now.getMonth() + 1)}${pad2(now.getDate())}-${Math.floor(100 + Math.random() * 900)}`;
+    $('refNo').textContent = refNo;
+    $('dateNo').textContent = dateStr;
+    $('estNote').textContent = SITE_CONFIG.estimateNote;
+    $('waFloat').href = `https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent("Hi Duocomsystems, I'm interested in your services")}`;
+
+    // ── State (autosaved) ──
+    const saved = storeGet(STORE_KEY, {});
+    const state = {
+        qty: saved.qty || {},
+        taxOn: !!saved.taxOn,
+        service: Number.isInteger(saved.service) && SERVICES[saved.service] ? saved.service : 0,
+        client: Object.assign({ name: '', contact: '', location: '' }, saved.client),
+        req: Object.assign({ name: '', contact: '', location: '', site: '', camsIn: '', camsOut: '', details: '', services: [] }, saved.req),
+        search: '', cat: 'All', mode: 'build'
+    };
+    // drop quantities for products that no longer exist in the price list
+    Object.keys(state.qty).forEach(id => { if (!PRICE_LIST.some(p => p.id === id)) delete state.qty[id]; });
+
+    function save() { storeSet(STORE_KEY, { qty: state.qty, taxOn: state.taxOn, service: state.service, client: state.client, req: state.req }); }
+
+    function toast(msg, isError) {
+        const t = $('toast');
+        t.classList.toggle('error', !!isError);
+        t.querySelector('i').className = isError ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
+        $('toastMsg').textContent = msg;
+        t.classList.add('show');
+        clearTimeout(toast._t);
+        toast._t = setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // ── Tabs ──
+    function setMode(mode) {
+        state.mode = mode;
+        $('buildMode').hidden = mode !== 'build';
+        $('requestMode').hidden = mode !== 'request';
+        $('tabBuild').classList.toggle('active', mode === 'build');
+        $('tabRequest').classList.toggle('active', mode === 'request');
+        updateMobileBar();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    $('tabBuild').onclick = () => setMode('build');
+    $('tabRequest').onclick = () => setMode('request');
+    $('gotoRequest').onclick = () => setMode('request');
+
+    // ── Client details (build mode) ──
+    SERVICES.forEach((s, i) => { const o = document.createElement('option'); o.value = i; o.textContent = s.label; $('serviceSel').appendChild(o); });
+    // Arriving from a service page (e.g. get-quote.html?service=cctv) pre-selects that service
+    const wanted = new URLSearchParams(location.search).get('service');
+    const wantedIdx = SERVICES.findIndex(s => s.key === wanted);
+    if (wantedIdx >= 0) state.service = wantedIdx;
+    $('serviceSel').value = state.service;
+    $('clientName').value = state.client.name;
+    $('clientContact').value = state.client.contact;
+    $('clientLocation').value = state.client.location;
+    $('taxToggle').checked = state.taxOn;
+    $('clientName').oninput = e => { state.client.name = e.target.value; e.target.classList.remove('invalid'); save(); };
+    $('clientContact').oninput = e => { state.client.contact = e.target.value; e.target.classList.remove('invalid'); save(); };
+    $('clientLocation').oninput = e => { state.client.location = e.target.value; save(); };
+    $('serviceSel').onchange = e => { state.service = Number(e.target.value); save(); };
+    $('taxToggle').onchange = e => { state.taxOn = e.target.checked; refresh(); };
+
+    // ── Product list ──
+    const catChips = ['All'].concat(CATEGORIES);
+    catChips.forEach(c => {
+        const el = document.createElement('div');
+        el.className = 'chip' + (c === 'All' ? ' active' : ''); el.textContent = c;
+        el.onclick = () => { state.cat = c; document.querySelectorAll('#catChips .chip').forEach(x => x.classList.toggle('active', x === el)); renderProducts(); };
+        $('catChips').appendChild(el);
+    });
+    $('searchBox').oninput = e => { state.search = e.target.value.trim().toLowerCase(); renderProducts(); };
+
+    function setQty(p, row, v) {
+        v = Math.min(9999, Math.max(0, Math.floor(Number(v) || 0)));
+        if (v) state.qty[p.id] = v; else delete state.qty[p.id];
+        row.classList.toggle('selected', !!v);
+        return v;
+    }
+    function productRow(p) {
+        const row = document.createElement('div');
+        row.className = 'product' + (state.qty[p.id] ? ' selected' : '');
+        row.innerHTML = '<div class="p-info"><div class="p-name"></div><div class="p-rate"></div></div>' +
+            '<div class="stepper"><button type="button" aria-label="Decrease">&minus;</button>' +
+            '<input type="number" min="0" step="1" inputmode="numeric" placeholder="0"><button type="button" aria-label="Increase">+</button></div>';
+        row.querySelector('.p-name').textContent = p.name;
+        row.querySelector('.p-rate').textContent = `KES ${p.rate.toLocaleString('en-KE')} ${p.unit === 'each' ? 'each' : p.unit}`;
+        const input = row.querySelector('input'), [minus, plus] = row.querySelectorAll('button');
+        input.value = state.qty[p.id] || '';
+        minus.onclick = () => { input.value = setQty(p, row, (state.qty[p.id] || 0) - 1) || ''; refresh(); };
+        plus.onclick  = () => { input.value = setQty(p, row, (state.qty[p.id] || 0) + 1) || ''; refresh(); };
+        input.oninput  = () => { setQty(p, row, input.value); refresh(); };
+        input.onchange = () => { input.value = state.qty[p.id] || ''; };
+        return row;
+    }
+    function renderProducts() {
+        const wrap = $('productList'); wrap.innerHTML = '';
+        CATEGORIES.forEach(cat => {
+            if (state.cat !== 'All' && state.cat !== cat) return;
+            const list = PRICE_LIST.filter(p => p.category === cat && (!state.search || p.name.toLowerCase().includes(state.search)));
+            if (!list.length) return;
+            const h = document.createElement('h4'); h.className = 'cat-title'; h.textContent = cat; wrap.appendChild(h);
+            list.forEach(p => wrap.appendChild(productRow(p)));
+        });
+        if (!wrap.children.length) wrap.innerHTML = '<p class="empty">No items match your search.</p>';
+    }
+
+    // ── Summary ──
+    const selectedItems = () => PRICE_LIST.filter(p => state.qty[p.id]).map(p => ({ name: p.name, qty: state.qty[p.id], rate: p.rate, amount: p.rate * state.qty[p.id] }));
+
+    function refresh() {
+        const items = selectedItems();
+        const t = computeTotals(items, state.taxOn, 0);
+        const box = $('sumItems'); box.innerHTML = '';
+        if (!items.length) {
+            box.innerHTML = '<div class="sum-empty">No items selected yet.<br>Use the + buttons to add items.</div>';
+        } else {
+            items.forEach(it => {
+                const d = document.createElement('div'); d.className = 'sum-item';
+                d.innerHTML = '<div class="nm"></div><div class="am"></div>';
+                d.querySelector('.nm').innerHTML = '';
+                d.querySelector('.nm').appendChild(document.createTextNode(it.name));
+                const sm = document.createElement('small'); sm.textContent = `${it.qty} x KES ${it.rate.toLocaleString('en-KE')}`; d.querySelector('.nm').appendChild(sm);
+                d.querySelector('.am').textContent = fmtKES(it.amount);
+                box.appendChild(d);
+            });
+        }
+        $('sumSub').textContent = fmtKES(t.sub);
+        $('sumTax').textContent = state.taxOn ? fmtKES(t.tax) : '\u2014';
+        $('sumTotal').textContent = fmtKES(t.grand);
+        $('sumWords').textContent = wordsFor(t.grand);
+        $('mbTotal').textContent = fmtKES(t.grand);
+        updateMobileBar(items.length);
+        save();
+    }
+    function updateMobileBar(count) {
+        if (count === undefined) count = selectedItems().length;
+        $('mobileBar').classList.toggle('show', state.mode === 'build' && count > 0);
+    }
+    $('mbBtn').onclick = () => $('summary').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // ── Build the quote object / validation ──
+    function currentQuote() {
+        const svc = SERVICES[state.service];
+        return {
+            title: svc.title + ' QUOTATION', docNo: refNo, dateStr,
+            client: { name: state.client.name.trim(), location: state.client.location.trim(), contact: state.client.contact.trim(), service: svc.label },
+            items: selectedItems(), taxOn: state.taxOn, labour: 0, footnote: SITE_CONFIG.estimateNote
+        };
+    }
+    function validate(needContact) {
+        if (!state.client.name.trim()) { $('clientName').classList.add('invalid'); $('clientName').focus(); toast('Please enter your name or company.', true); return false; }
+        if (needContact && !state.client.contact.trim()) { $('clientContact').classList.add('invalid'); $('clientContact').focus(); toast('Please add a phone number or email so we can reach you.', true); return false; }
+        if (!selectedItems().length) { toast('Select at least one item first.', true); return false; }
+        return true;
+    }
+    function quoteText(q) {
+        const t = computeTotals(q.items, q.taxOn, 0);
+        return q.items.map((it, i) => `${i + 1}. ${it.name} - ${it.qty} x ${it.rate.toLocaleString('en-KE')} = ${fmtKES(it.amount)}`).join('\n')
+            + `\nSub-Total: ${fmtKES(t.sub)}` + (t.tax ? `\n${vatLabel()}: ${fmtKES(t.tax)}` : '') + `\nTOTAL: ${fmtKES(t.grand)}`;
+    }
+
+    // ── Actions ──
+    $('btnPdf').onclick = () => {
+        if (!validate(false)) return;
+        try {
+            const q = currentQuote();
+            buildQuotePDF(q).save(`Quotation_${safeName(q.client.name)}_${q.docNo}.pdf`);
+            toast('Your quotation PDF is downloading.');
+        } catch (e) { toast('Could not create the PDF. Check your internet connection and try again.', true); }
+    };
+
+    async function submitEmail(btn, fields, onDone) {
+        const label = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        try {
+            await sendToInbox(fields);
+            onDone();
+        } catch (e) {
+            toast('Could not send right now. Please try WhatsApp or call us on ' + SITE_CONFIG.phones + '.', true);
+        } finally { btn.disabled = false; btn.innerHTML = label; }
+    }
+    $('btnEmail').onclick = () => {
+        if (!validate(true)) return;
+        const q = currentQuote();
+        const fields = {
+            _subject: `Quote request ${q.docNo} - ${q.client.name}`, _honey: '',
+            'Request type': 'Quote built from price list', Reference: q.docNo, Date: q.dateStr,
+            Name: q.client.name, 'Phone / Email': q.client.contact, Location: q.client.location || '-', Service: q.client.service,
+            Items: quoteText(q)
+        };
+        if (q.client.contact.includes('@')) fields.email = q.client.contact;
+        submitEmail($('btnEmail'), fields, () => toast('Sent! Our team will contact you shortly.'));
+    };
+    $('btnWa').onclick = () => {
+        if (!validate(false)) return;
+        const q = currentQuote();
+        const msg = `*${q.title} REQUEST - Duocomsystems*\nRef: ${q.docNo}\nDate: ${q.dateStr}\nService: ${q.client.service}\n`
+            + `Client: ${q.client.name}${q.client.location ? ', ' + q.client.location : ''}${q.client.contact ? '\nContact: ' + q.client.contact : ''}\n\n*ITEMS:*\n${quoteText(q)}`;
+        window.open(`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+    };
+    $('btnClear').onclick = () => {
+        if (!confirm('Clear your items and details and start over?')) return;
+        state.qty = {}; state.taxOn = false; state.client = { name: '', contact: '', location: '' };
+        $('taxToggle').checked = false; $('clientName').value = $('clientContact').value = $('clientLocation').value = '';
+        renderProducts(); refresh(); toast('Started over.');
+    };
+
+    // ── Request mode ──
+    SERVICES.forEach((s, i) => {
+        const l = document.createElement('label');
+        l.innerHTML = '<input type="checkbox"> <span></span>';
+        l.querySelector('span').textContent = s.label;
+        const cb = l.querySelector('input'); cb.value = s.label; cb.checked = state.req.services.includes(s.label);
+        cb.onchange = () => { state.req.services = Array.from(document.querySelectorAll('#rServices input:checked')).map(x => x.value); save(); };
+        $('rServices').appendChild(l);
+    });
+    const reqMap = { rName: 'name', rContact: 'contact', rLocation: 'location', rSite: 'site', rIn: 'camsIn', rOut: 'camsOut', rDetails: 'details' };
+    const camCount = v => Math.max(0, parseInt(v, 10) || 0);
+    const camTotal = () => camCount(state.req.camsIn) + camCount(state.req.camsOut);
+    const showCamTotal = () => { $('rCamTotal').textContent = camTotal(); };
+    Object.entries(reqMap).forEach(([id, key]) => {
+        const el = $(id); el.value = state.req[key];
+        const h = () => { state.req[key] = el.value; el.classList.remove('invalid'); showCamTotal(); save(); };
+        el.oninput = h; el.onchange = h;
+    });
+    showCamTotal();
+    function reqFields() {
+        const r = state.req;
+        return {
+            _subject: `Custom quote request - ${r.name}`, _honey: $('reqForm').elements['_honey'].value,
+            'Request type': 'Custom quote request', Name: r.name, 'Phone / Email': r.contact, Location: r.location || '-',
+            'Site type': r.site || '-', 'Services needed': r.services.length ? r.services.join(', ') : '-',
+            'Indoor cameras': camCount(r.camsIn), 'Outdoor cameras': camCount(r.camsOut), 'Total cameras': camTotal(), Details: r.details || '-'
+        };
+    }
+    function reqValid() {
+        if (!state.req.name.trim()) { $('rName').classList.add('invalid'); $('rName').focus(); toast('Please enter your name or company.', true); return false; }
+        if (!state.req.contact.trim()) { $('rContact').classList.add('invalid'); $('rContact').focus(); toast('Please add a phone number or email so we can reach you.', true); return false; }
+        return true;
+    }
+    $('reqForm').onsubmit = e => {
+        e.preventDefault();
+        if (!reqValid()) return;
+        if ($('reqForm').elements['_honey'].value) return; // spam bot
+        const f = reqFields();
+        if (state.req.contact.includes('@')) f.email = state.req.contact;
+        submitEmail($('btnReqSend'), f, () => { $('reqFormPanel').hidden = true; $('reqSuccess').hidden = false; window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    };
+    $('btnReqWa').onclick = () => {
+        if (!reqValid()) return;
+        const f = reqFields();
+        const msg = '*CUSTOM QUOTE REQUEST - Duocomsystems*\n' + Object.entries(f).filter(([k]) => !k.startsWith('_') && k !== 'email').map(([k, v]) => `${k}: ${v}`).join('\n');
+        window.open(`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+    };
+    $('btnReqAgain').onclick = () => {
+        state.req = { name: '', contact: '', location: '', site: '', camsIn: '', camsOut: '', details: '', services: [] };
+        Object.entries(reqMap).forEach(([id]) => { $(id).value = ''; });
+        document.querySelectorAll('#rServices input').forEach(c => c.checked = false);
+        showCamTotal(); save(); $('reqSuccess').hidden = true; $('reqFormPanel').hidden = false;
+    };
+
+    // ── Init ──
+    renderProducts();
+    refresh();
+})();
+</script>
+<script>
+(function(){
+  var btn=document.querySelector('.mobile-menu-btn'),nav=document.getElementById('navLinks');
+  if(btn&&nav){btn.addEventListener('click',function(){nav.classList.toggle('active');});}
+  var hdr=document.querySelector('header');
+  if(hdr){window.addEventListener('scroll',function(){hdr.classList.toggle('header-sm',window.scrollY>80);},{passive:true});}
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.service-card,.svc-card,.system-card,.reason-card,.maintenance-card,.mvv-card,.team-member,.portfolio-item,.indicator,.contact-item,.benefit-item,.process-step,.gallery-item,.achievement-card').forEach(function(el){el.classList.add('reveal');io.observe(el);});
+  }
+})();
+</script>
+</body>
+</html>
