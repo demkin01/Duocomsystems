@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Quotation Tool (Private) | Duocom Systems</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Quotation Tool (Private) | Duocom Systems">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- Google Analytics: replace G-XXXXXXXXXX with your Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --navy:#0A1D3D; --gold:#FFB400; --purple:#6B4FA0; --lpur:#EDE7F6; --dark:#2D3748; --mid:#4A5568; --bg:#F4F6FA; --line:#D4D4DC; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,-apple-system,sans-serif; }
+        body { background:var(--bg); color:var(--dark); line-height:1.5; }
+        [hidden] { display:none !important; }
+        .topbar { background:var(--navy); color:#fff; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+        .topbar h1 { font-size:1.15rem; display:flex; align-items:center; gap:10px; }
+        .topbar h1 i { color:var(--gold); }
+        .topbar small { color:#CBD5E0; }
+        .wrap { max-width:1000px; margin:22px auto 60px; padding:0 16px; display:grid; gap:18px; }
+        .card { background:#fff; border-radius:12px; box-shadow:0 3px 16px rgba(10,29,61,.08); padding:20px 22px; }
+        .card h2 { font-size:1rem; color:var(--navy); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px 16px; }
+        .f label { display:block; font-size:.76rem; font-weight:600; color:var(--mid); margin-bottom:3px; }
+        .f input, .f select { width:100%; border:1.5px solid #DDE3EF; border-radius:8px; padding:9px 11px; font-size:.93rem; outline:none; background:#fff; }
+        .f input:focus, .f select:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(255,180,0,.15); }
+        .f .hint { font-size:.72rem; color:#718096; margin-top:3px; }
+        .f .invalid { border-color:#E53E3E; }
+
+        .addbar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+        .addbar select { flex:1; min-width:200px; border:1.5px solid #DDE3EF; border-radius:8px; padding:9px 11px; font-size:.9rem; }
+
+        table.items { width:100%; border-collapse:collapse; font-size:.92rem; }
+        table.items thead th { background:var(--purple); color:#fff; padding:10px 8px; font-size:.8rem; letter-spacing:.03em; }
+        table.items tbody tr:nth-child(even) { background:var(--lpur); }
+        table.items td { padding:6px 6px; border-bottom:1px solid #E6E0F2; vertical-align:middle; }
+        table.items td input { width:100%; border:none; background:transparent; padding:6px 6px; font-size:.92rem; outline:none; border-radius:4px; }
+        table.items td input:focus { background:rgba(255,180,0,.14); }
+        td.c-n { width:36px; text-align:center; color:var(--mid); font-weight:600; }
+        td.c-q { width:80px; } td.c-q input { text-align:center; }
+        td.c-r { width:120px; } td.c-r input { text-align:right; }
+        td.c-a { width:130px; text-align:right; font-weight:600; color:var(--navy); padding-right:10px; }
+        td.c-d { width:36px; text-align:center; }
+        .del { background:none; border:none; color:#B9B2CC; cursor:pointer; font-size:1rem; }
+        .del:hover { color:#E53E3E; }
+        .empty { text-align:center; color:#A0AEC0; padding:22px; font-size:.9rem; }
+
+        .totals { margin-left:auto; max-width:340px; margin-top:16px; }
+        .trow { display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:.93rem; }
+        .trow.grand { border-top:2.5px solid var(--purple); margin-top:4px; padding-top:10px; font-size:1.15rem; font-weight:700; color:var(--navy); }
+        .trow input[type=number] { width:130px; text-align:right; border:none; border-bottom:1.5px dashed #B9A8DA; background:transparent; font-size:.93rem; padding:2px 0; outline:none; }
+        .trow label.chk { display:flex; align-items:center; gap:8px; cursor:pointer; }
+        .trow label.chk input { width:17px; height:17px; accent-color:var(--purple); }
+        .words { margin-top:10px; padding:10px 12px; background:var(--bg); border-left:4px solid var(--purple); border-radius:6px; font-size:.8rem; color:var(--mid); }
+        .words b { color:var(--dark); }
+
+        .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 20px; border-radius:8px; font-weight:600; font-size:.92rem; cursor:pointer; border:none; transition:all .2s; }
+        .btn-primary { background:var(--gold); color:var(--navy); }
+        .btn-primary:hover { background:#e6a200; }
+        .btn-navy { background:var(--navy); color:#fff; }
+        .btn-outline { background:#fff; color:var(--mid); border:1.5px solid #DDE3EF; }
+        .btn-outline:hover { border-color:var(--navy); color:var(--navy); }
+        .btn-sm { padding:6px 12px; font-size:.8rem; }
+        .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:18px; padding-top:16px; border-top:1px solid #E2E8F0; }
+
+        .hist-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid #EDF0F5; flex-wrap:wrap; }
+        .hist-row .meta { flex:1; min-width:200px; }
+        .hist-row .meta b { color:var(--navy); }
+        .hist-row .meta small { display:block; color:var(--mid); }
+        .hist-row .tot { font-weight:700; color:var(--navy); }
+
+        .toast { position:fixed; bottom:24px; right:24px; z-index:9999; background:var(--navy); color:#fff; padding:13px 20px; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.2); display:flex; align-items:center; gap:10px; font-size:.9rem; transform:translateY(20px); opacity:0; transition:all .3s; pointer-events:none; max-width:340px; }
+        .toast.show { transform:translateY(0); opacity:1; }
+        .toast i { color:var(--gold); } .toast.error i { color:#FC8181; }
+
+        /* Login + sync status */
+        .auth-wrap { min-height:calc(100vh - 56px); display:flex; align-items:center; justify-content:center; padding:20px; }
+        .auth-card { background:#fff; width:100%; max-width:380px; border-radius:14px; box-shadow:0 8px 30px rgba(10,29,61,.12); padding:28px 26px; }
+        .auth-card h2 { color:var(--navy); margin-bottom:4px; }
+        .auth-card p.sub { color:var(--mid); font-size:.88rem; margin-bottom:18px; }
+        .auth-card .f { margin-bottom:12px; }
+        .auth-err { background:#FFF5F5; border:1px solid #FEB2B2; color:#C53030; border-radius:8px; padding:9px 12px; font-size:.85rem; margin-bottom:12px; }
+        .auth-card .link { background:none; border:none; color:var(--purple); font-size:.84rem; cursor:pointer; margin-top:10px; }
+        .status { display:flex; align-items:center; gap:12px; flex-wrap:wrap; font-size:.8rem; color:#CBD5E0; }
+        .pill { padding:3px 10px; border-radius:20px; background:rgba(255,255,255,.12); white-space:nowrap; }
+        .pill.ok { background:rgba(72,187,120,.25); color:#C6F6D5; }
+        .pill.warn { background:rgba(255,180,0,.25); color:#FFE9A8; }
+        .pill.bad { background:rgba(252,129,129,.25); color:#FED7D7; }
+        .signout { background:none; border:1px solid rgba(255,255,255,.35); color:#fff; border-radius:6px; padding:3px 10px; cursor:pointer; font-size:.78rem; }
+        .banner { background:#FFFBEB; border:1px solid #F6E05E; color:#744210; border-radius:10px; padding:10px 14px; font-size:.85rem; }
+
+        /* Phone layout: each item becomes a card */
+        @media (max-width:700px) {
+            .wrap { padding:0 10px; } .card { padding:16px 14px; }
+            table.items thead { display:none; }
+            table.items, table.items tbody { display:block; }
+            table.items tr { display:block; border:1.5px solid #E2DDF0; border-radius:10px; margin-bottom:10px; padding:8px; background:#fff !important; position:relative; }
+            table.items td { display:flex; justify-content:space-between; align-items:center; gap:10px; border:none; padding:3px 4px; width:100% !important; text-align:left !important; }
+            table.items td::before { content:attr(data-label); font-size:.72rem; color:var(--mid); font-weight:600; flex-shrink:0; width:64px; }
+            table.items td input { flex:1; border:1.5px solid #E6E0F2; background:#fff; text-align:left !important; }
+            table.items td.c-n { position:absolute; top:6px; left:10px; width:auto !important; }
+            table.items td.c-n::before { content:''; width:0; }
+            table.items td.c-d { position:absolute; top:4px; right:6px; width:auto !important; }
+            table.items td.c-d::before { content:''; width:0; }
+            table.items td.c-a { justify-content:space-between; }
+            table.items td.c-i { padding-top:20px; }
+            .totals { max-width:none; }
+            .btn { flex:1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <h1><i class="fas fa-lock"></i> Duocom Systems &mdash; Quotation Tool (private)</h1>
+    <div class="status" id="statusBar" hidden>
+        <span class="pill" id="modePill"></span>
+        <span class="pill" id="syncPill"></span>
+        <span id="userEmail"></span>
+        <button type="button" class="signout" id="btnSignOut" hidden>Sign out</button>
+    </div>
+</div>
+
+<!-- Login screen (cloud mode only) -->
+<div class="auth-wrap" id="authWrap" hidden>
+    <div class="auth-card">
+        <h2><i class="fas fa-lock" style="color:var(--gold)"></i> Sign in</h2>
+        <p class="sub">Duocom Systems quotation tool &mdash; private access</p>
+        <div class="auth-err" id="authErr" hidden></div>
+        <div class="f"><label for="authEmail">Email</label><input type="email" id="authEmail" autocomplete="username"></div>
+        <div class="f"><label for="authPass">Password</label><input type="password" id="authPass" autocomplete="current-password"></div>
+        <button type="button" class="btn btn-primary" id="btnSignIn" style="width:100%">Sign in</button>
+        <div style="text-align:center"><button type="button" class="link" id="btnReset">Forgot password?</button></div>
+    </div>
+</div>
+
+<div class="wrap" id="appWrap" hidden>
+    <div class="banner" id="localBanner" hidden><i class="fas fa-triangle-exclamation"></i> <b>Local mode:</b> quotations are saved on this device only. Set up cloud sync (see <code>firebase-config.js</code>) to see the same quotations on your phone and laptop.<div id="localWhy" style="margin-top:6px;font-weight:600"></div></div>
+
+    <div class="card">
+        <h2><i class="fas fa-hashtag"></i> Quotation details</h2>
+        <div class="grid">
+            <div class="f"><label for="docNo">Quotation No</label><input type="text" id="docNo">
+                <div class="hint">The next number is given automatically when you save or download.</div></div>
+            <div class="f"><label for="qDate">Date</label><input type="date" id="qDate"></div>
+            <div class="f"><label for="service">Service / title</label><select id="service"></select></div>
+            <div class="f"><label for="counter">Set next number</label><input type="number" id="counter" min="1" step="1">
+                <div class="hint">e.g. 48 gives DOC A0048</div></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><i class="fas fa-user"></i> Client</h2>
+        <div class="grid">
+            <div class="f"><label for="cName">Client / site name *</label><input type="text" id="cName" placeholder="e.g. Lakewood Plaza"></div>
+            <div class="f"><label for="cLoc">Location</label><input type="text" id="cLoc" placeholder="e.g. Ruiru, Kiambu"></div>
+            <div class="f"><label for="cContact">Phone / Email (optional)</label><input type="text" id="cContact"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><i class="fas fa-list"></i> Items</h2>
+        <div class="addbar">
+            <select id="quickAdd"><option value="">Quick add from price list...</option></select>
+            <button type="button" class="btn btn-navy btn-sm" id="btnQuick"><i class="fas fa-plus"></i> Add</button>
+            <button type="button" class="btn btn-outline btn-sm" id="btnBlank"><i class="fas fa-plus"></i> Blank row</button>
+        </div>
+        <table class="items">
+            <thead><tr><th>#</th><th style="text-align:left">Item / Description</th><th>Qty</th><th>Rate (KES)</th><th style="text-align:right;padding-right:10px">Amount (KES)</th><th></th></tr></thead>
+            <tbody id="rows"></tbody>
+        </table>
+        <div class="empty" id="emptyMsg">No items yet. Use "Quick add" or "Blank row".</div>
+
+        <div class="totals">
+            <div class="trow"><span>Sub-Total</span><span id="tSub">KES 0.00</span></div>
+            <div class="trow"><label class="chk"><input type="checkbox" id="taxOn"> Include VAT (16%)</label><span id="tTax">&mdash;</span></div>
+            <div class="trow"><span>Labour (KES)</span><input type="number" id="labour" min="0" step="any" placeholder="0.00"></div>
+            <div class="trow grand"><span>Total (KES)</span><span id="tGrand">KES 0.00</span></div>
+        </div>
+        <div class="words">Total in words: <b id="tWords">&mdash;</b></div>
+
+        <div class="actions">
+            <button type="button" class="btn btn-primary" id="btnPdf"><i class="fas fa-file-pdf"></i> Download PDF</button>
+            <button type="button" class="btn btn-navy" id="btnSave"><i class="fas fa-floppy-disk"></i> Save</button>
+            <button type="button" class="btn btn-outline" id="btnNew"><i class="fas fa-file"></i> New quotation</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><i class="fas fa-clock-rotate-left"></i> Recent quotations</h2>
+        <div id="history"></div>
+        <div class="empty" id="histEmpty">Quotations you save or download appear here so you can re-open them.</div>
+        <div class="actions" style="border:none;padding-top:0;margin-top:10px" id="histActions" hidden>
+            <button type="button" class="btn btn-outline btn-sm" id="btnClearHist"><i class="fas fa-trash"></i> Clear history</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="prices.js"></script>
+<script src="quote-core.js"></script>
+<script src="firebase-config.js"></script>
+<script src="admin-app.js"></script>
+</body>
+</html>
