@@ -316,6 +316,21 @@ footer{border-top:4px solid var(--gold)}
 .hero-chip.a{bottom:22px;left:-18px}
 .hero-chip.b{top:22px;right:-14px}
 @media (max-width:900px){.hero-grid{grid-template-columns:1fr}.hero{padding:130px 0 70px}.hero-chip.a{left:10px}.hero-chip.b{right:10px}}
+
+/* ===== Mobile & tablet fixes =====
+   1) Bottom Call/WhatsApp/Get Quote bar removed on phones & tablets;
+      floating WhatsApp button restored on small screens.
+   2) Mobile menu dropdown keeps company-navy background with readable
+      white links and gold hover (was white-on-white). */
+.mobile-call-bar{display:none!important}
+@media (max-width:820px){
+    body{padding-bottom:0!important}
+    .whatsapp-float{display:flex!important;bottom:20px!important;right:16px!important;width:54px!important;height:54px!important;font-size:1.6rem!important}
+    .nav-links{background-color:#0A1D3D!important;border:1px solid rgba(255,255,255,.12);border-top:none;border-radius:0 0 12px 12px}
+    .nav-links a{color:#FFFFFF!important}
+    .nav-links a:hover{color:#FFB400!important}
+    .nav-links a.btn-quote-nav,.nav-links a.btn-quote-nav:hover{color:#0A1D3D!important}
+}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -359,12 +374,12 @@ footer{border-top:4px solid var(--gold)}
     <div class="container">
 
         <div class="mode-tabs" role="tablist">
-            <button type="button" class="mode-tab active" id="tabBuild" role="tab"><i class="fas fa-list-check"></i> Build Your Quote</button>
-            <button type="button" class="mode-tab" id="tabRequest" role="tab"><i class="fas fa-paper-plane"></i> Request a Custom Quote</button>
+            <button type="button" class="mode-tab active" id="tabRequest" role="tab"><i class="fas fa-paper-plane"></i> Request a Custom Quote</button>
+            <button type="button" class="mode-tab" id="tabBuild" role="tab"><i class="fas fa-list-check"></i> Build Your Quote</button>
         </div>
 
         <!-- ═════════ BUILD MODE ═════════ -->
-        <div id="buildMode">
+        <div id="buildMode" hidden>
             <div class="build-grid">
                 <div>
                     <div class="panel">
@@ -410,7 +425,7 @@ footer{border-top:4px solid var(--gold)}
         </div>
 
         <!-- ═════════ REQUEST MODE ═════════ -->
-        <div id="requestMode" hidden>
+        <div id="requestMode">
             <div class="request-wrap">
                 <div class="panel" id="reqFormPanel">
                     <h3><i class="fas fa-paper-plane" style="color:var(--gold)"></i> Tell us about your site</h3>
@@ -439,15 +454,14 @@ footer{border-top:4px solid var(--gold)}
                                 <textarea id="rDetails" placeholder="e.g. 3-storey building, need to view cameras on my phone, existing cabling..."></textarea></div>
                         </div>
                         <div class="btn-stack" style="max-width:360px">
-                            <button type="submit" class="btn btn-primary" id="btnReqSend"><i class="fas fa-paper-plane"></i> Send Request</button>
-                            <button type="button" class="btn btn-secondary" id="btnReqWa"><i class="fab fa-whatsapp"></i> Send on WhatsApp instead</button>
-                        </div>
+                            <button type="submit" class="btn btn-primary" id="btnReqSend"><i class="fab fa-whatsapp"></i> Send Request on WhatsApp</button>
+                            </div>
                     </form>
                 </div>
                 <div class="panel success" id="reqSuccess" hidden>
                     <i class="fas fa-circle-check"></i>
                     <h3>Request received</h3>
-                    <p>Thank you! Our team will review your details and contact you shortly.</p>
+                    <p>Your WhatsApp should have opened with your request &mdash; just press <b>send</b>. Our team will get back to you shortly.</p>
                     <p style="margin-top:18px"><button type="button" class="btn btn-outline" style="width:auto" id="btnReqAgain">Send another request</button></p>
                 </div>
             </div>
@@ -535,7 +549,7 @@ footer{border-top:4px solid var(--gold)}
         service: Number.isInteger(saved.service) && SERVICES[saved.service] ? saved.service : 0,
         client: Object.assign({ name: '', contact: '', location: '' }, saved.client),
         req: Object.assign({ name: '', contact: '', location: '', site: '', camsIn: '', camsOut: '', details: '', services: [] }, saved.req),
-        search: '', cat: 'All', mode: 'build'
+        search: '', cat: 'All', mode: 'request'
     };
     // drop quantities for products that no longer exist in the price list
     Object.keys(state.qty).forEach(id => { if (!PRICE_LIST.some(p => p.id === id)) delete state.qty[id]; });
@@ -765,14 +779,9 @@ footer{border-top:4px solid var(--gold)}
         if (!reqValid()) return;
         if ($('reqForm').elements['_honey'].value) return; // spam bot
         const f = reqFields();
-        if (state.req.contact.includes('@')) f.email = state.req.contact;
-        submitEmail($('btnReqSend'), f, () => { $('reqFormPanel').hidden = true; $('reqSuccess').hidden = false; window.scrollTo({ top: 0, behavior: 'smooth' }); });
-    };
-    $('btnReqWa').onclick = () => {
-        if (!reqValid()) return;
-        const f = reqFields();
-        const msg = '*CUSTOM QUOTE REQUEST - Duocomsystems*\n' + Object.entries(f).filter(([k]) => !k.startsWith('_') && k !== 'email').map(([k, v]) => `${k}: ${v}`).join('\n');
-        window.open(`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+        const msg = '*CUSTOM QUOTE REQUEST - Duocomsystems*\n' + Object.entries(f).filter(([k]) => !k.startsWith('_') && k !== 'email').map(([k, v]) => k + ': ' + v).join('\n');
+        window.open('https://wa.me/' + SITE_CONFIG.whatsapp + '?text=' + encodeURIComponent(msg), '_blank');
+        $('reqFormPanel').hidden = true; $('reqSuccess').hidden = false; window.scrollTo({ top: 0, behavior: 'smooth' });
     };
     $('btnReqAgain').onclick = () => {
         state.req = { name: '', contact: '', location: '', site: '', camsIn: '', camsOut: '', details: '', services: [] };
